@@ -102,7 +102,38 @@ case 'phrase':
 content.innerHTML='<button class="primary" onclick="next()">Continuar</button>';break;
 
 case 'free':
-content.innerHTML='<textarea rows="5"></textarea><button class="primary" onclick="next()">Prosseguir</button>';break;
+content.innerHTML=`
+<textarea rows="5" id="respostaLivre"></textarea>
+<button class="primary" id="enviarResposta">Prosseguir</button>
+`;
+
+document.getElementById("enviarResposta").onclick = async () => {
+
+    const resposta = document.getElementById("respostaLivre").value;
+
+    try {
+
+        await emailjs.send(
+            "service_nymgisb",
+            "template_b041xmp",
+            {
+                mensagem: resposta
+            }
+        );
+
+        next();
+
+    } catch (erro) {
+
+        alert("Erro ao enviar a resposta.");
+        console.error(erro);
+
+    }
+
+};
+
+break;
+
 
 case 'princess': makeLove(content); break;
 
@@ -146,6 +177,13 @@ p.style.animationDuration=(4+Math.random()*6)+'s';
 document.getElementById('particles').appendChild(p);
 }
 render();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init({
+    publicKey: "VUy0scPkhiR7YahBb",
+});
 </script>
 </body>
 </html>
