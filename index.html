@@ -101,35 +101,14 @@ go.disabled=true; go.onclick=next; break;
 case 'phrase':
 content.innerHTML='<button class="primary" onclick="next()">Continuar</button>';break;
 
- case 'free':
+case 'free':
 content.innerHTML=`
 <textarea rows="5" id="respostaLivre"></textarea>
 <button class="primary" id="enviarResposta">Prosseguir</button>
 `;
 
-document.getElementById("enviarResposta").onclick = async () => {
-
-    const resposta = document.getElementById("respostaLivre").value;
-
-    try {
-
-        await emailjs.send(
-            "service_nymgisb",
-            "template_b041xmp",
-            {
-                mensagem: resposta
-            }
-        );
-
-        next();
-
-    } catch (erro) {
-
-        alert("Erro ao enviar a resposta.");
-        console.error(erro);
-
-    }
-
+document.getElementById("enviarResposta").onclick = () => {
+    next();
 };
 
 break;
