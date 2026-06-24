@@ -65,7 +65,11 @@ const t=setInterval(()=>{
 },120);
 }
 
-function next(){current++;render();}
+function next(){
+    current++;
+    console.log("Tela atual:", current, screens[current]?.type);
+    render();
+}
 
 function render(){
 const s=screens[current];
