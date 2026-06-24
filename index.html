@@ -45,7 +45,7 @@ font-size:16px;margin:8px
 
 <script>
 const screens=[
-{type:'start',text:'Picolé'},
+{type:'start',text:'Picolé💙.'},
 {type:'name',text:'Qual meu nome inteiro?'},
 {type:'love',text:'Você me ama?'},
 {type:'percent',text:'Quantos % você me ama?'},
@@ -120,7 +120,7 @@ break;
 case 'princess': makeLove(content); break;
 
 case 'final':
-content.innerHTML='<br><button class="primary" onclick="location.reload()">Recomeçar ❤️</button>';
+content.innerHTML='<br><button class="primary" onclick="location.reload()">Recomeçar 💙</button>';
 startHearts();
 break;
 }
@@ -128,7 +128,7 @@ break;
 }
 
 function makeLove(content){
-content.innerHTML=`<button class="primary" id="yes">Sim ❤️</button><button class="no" id="no">Não 😅</button>`;
+content.innerHTML=`<button class="primary" id="yes">Sim 💙</button><button class="no" id="no">Não 😅</button>`;
 let tries=0;
 yes.onclick=next;
 no.onclick=()=>{
