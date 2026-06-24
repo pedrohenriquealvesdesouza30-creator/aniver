@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Picolé ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;font-family:Arial,sans-serif;height:100vh;overflow:hidden;
+background:linear-gradient(135deg,#0f172a,#2563eb,#60a5fa);
+display:flex;justify-content:center;align-items:center;color:white;
+}
+#particles{position:fixed;inset:0;pointer-events:none}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:white;opacity:.5;animation:float 8s linear infinite}
+@keyframes float{from{transform:translateY(100vh)}to{transform:translateY(-10vh)}}
+.card{
+width:min(92vw,700px);background:rgba(255,255,255,.12);
+backdrop-filter:blur(10px);padding:30px;border-radius:24px;text-align:center;
+box-shadow:0 0 30px rgba(0,0,0,.2)
+}
+input,textarea{width:100%;padding:12px;border-radius:12px;border:none;margin:10px 0}
+button{
+padding:12px 22px;border:none;border-radius:12px;cursor:pointer;
+font-size:16px;margin:8px
+}
+.primary{background:#60a5fa;color:#001}
+.no{background:#1e3a8a;color:#fff;position:relative}
+.hidden{display:none}
+.fade{animation:fade .6s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#rangeValue{font-size:28px;font-weight:bold}
+#hearts{position:fixed;inset:0;pointer-events:none}
+.heart{position:absolute;animation:up 6s linear forwards;font-size:24px}
+@keyframes up{from{transform:translateY(100vh)}to{transform:translateY(-20vh)}}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+<div class="card fade">
+<h1 id="text"></h1>
+<div id="content"></div>
+</div>
+<div id="hearts"></div>
+
+<script>
+const screens=[
+{type:'start',text:'Picolé'},
+{type:'name',text:'Qual meu nome inteiro?'},
+{type:'love',text:'Você me ama?'},
+{type:'percent',text:'Quantos % você me ama?'},
+{type:'phrase',text:'Princesa, o viver é Cristo, o morrer é lucro, e amar você é bônus.'},
+{type:'free',text:'O que você mais gosta em mim?'},
+{type:'princess',text:'Gosta que eu te chame de princesa?'},
+{type:'final',text:`Princesa, Você significa muito para mim. Nós nos conhecemos há apenas 1 mês, mas o meu carinho por você vai muito além disso. Cada áudio, cada mensagem e cada momento em call foram especiais para mim. Eu li, escutei e respondi tudo com muito carinho, porque você é uma pessoa muito importante na minha vida. Quando penso em um futuro feliz, penso em você fazendo parte dele. Você está presente nos meus planos, nas minhas orações e nos meus sonhos. Infelizmente, não posso te dar um presente, um abraço ou estar aí ao seu lado neste momento. Mas fiz tudo isso de coração, pensando em você em cada detalhe. Espero que um dia possamos estar juntos, rezando, indo à missa e crescendo na fé. Quero ser um bom companheiro para você, alguém que te apoie, te respeite e caminhe ao seu lado. Que Cristo nos una e conduza nossos caminhos segundo a Sua vontade. Com carinho, Pedro ❤️`}
+];
+let current=0;
+
+function typeWords(el,text,done){
+el.innerHTML='';
+const words=text.split(' '); let i=0;
+const t=setInterval(()=>{
+ if(i<words.length){ el.innerHTML+=(i?' ':'')+words[i++]; }
+ else { clearInterval(t); done&&done(); }
+},120);
+}
+
+function next(){current++;render();}
+
+function render(){
+const s=screens[current];
+const text=document.getElementById('text');
+const content=document.getElementById('content');
+content.innerHTML='';
+typeWords(text,s.text,()=>{
+switch(s.type){
+case 'start':
+content.innerHTML='<button class="primary" onclick="next()">Prosseguir</button>';break;
+
+case 'name':
+content.innerHTML=`<input id="name"><button class="primary">Continuar</button><div id="msg"></div>`;
+content.querySelector('button').onclick=()=>{
+let v=document.getElementById('name').value.trim().toLowerCase();
+if(v==='pedro henrique alves de souza') next();
+else document.getElementById('msg').innerText='Tente novamente ❤️';
+};break;
+
+case 'love': makeLove(content); break;
+case 'percent':
+content.innerHTML=`<input type="range" min="0" max="100" value="0" id="r">
+<div id="rangeValue">0%</div><div id="warn"></div>
+<button class="primary" id="go">Prosseguir</button>`;
+const r=document.getElementById('r');
+r.oninput=()=>{
+rangeValue.innerText=r.value+'%';
+warn.innerText=(r.value<100)?'?':'';
+go.disabled=r.value<100;
+};
+go.disabled=true; go.onclick=next; break;
+
+case 'phrase':
+content.innerHTML='<button class="primary" onclick="next()">Continuar</button>';break;
+
+case 'free':
+content.innerHTML='<textarea rows="5"></textarea><button class="primary" onclick="next()">Prosseguir</button>';break;
+
+case 'princess': makeLove(content); break;
+
+case 'final':
+content.innerHTML='<br><button class="primary" onclick="location.reload()">Recomeçar ❤️</button>';
+startHearts();
+break;
+}
+});
+}
+
+function makeLove(content){
+content.innerHTML=`<button class="primary" id="yes">Sim ❤️</button><button class="no" id="no">Não 😅</button>`;
+let tries=0;
+yes.onclick=next;
+no.onclick=()=>{
+tries++;
+if(tries===1){
+no.style.position='absolute';
+no.style.left=Math.random()*300+'px';
+no.style.top=Math.random()*200+'px';
+}else no.style.display='none';
+};
+}
+
+function startHearts(){
+setInterval(()=>{
+const h=document.createElement('div');
+h.className='heart'; h.innerHTML='💙';
+h.style.left=Math.random()*100+'vw';
+document.getElementById('hearts').appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},400);
+}
+
+for(let i=0;i<40;i++){
+const p=document.createElement('div');
+p.className='particle';
+p.style.left=Math.random()*100+'vw';
+p.style.animationDuration=(4+Math.random()*6)+'s';
+document.getElementById('particles').appendChild(p);
+}
+render();
+</script>
+</body>
+</html>
